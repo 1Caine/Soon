@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>$SOON — Coming Soon… Forever</title>
+  <meta name="description" content="$SOON is always almost here. The only memecoin that launches… forever soon." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#06060a;
+      --card:#0c0c14;
+      --muted:#9aa3b2;
+      --text:#e9ecf1;
+      --primary:#c8a9ff; /* used in gradient */
+      --accent:#7bd4ff;  /* used in gradient */
+      --hot:#ff76b8;     /* used in gradient */
+      --ring: 0 0 40px rgba(120, 92, 255, .35);
+      --radius: 22px;
+      --shadow: 0 10px 30px rgba(0,0,0,.45);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;background:radial-gradient(1200px 800px at 80% -20%, rgba(127,86,217,.12), transparent 70%),
+                      radial-gradient(900px 700px at -10% 110%, rgba(123,212,255,.10), transparent 60%), var(--bg);
+         color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif;}
+    a{color:#cfe6ff}
+    .container{max-width:1100px;margin:0 auto;padding:24px}
+    .nav{display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+    .logo{width:42px;height:42px;border-radius:12px;background:conic-gradient(from 0deg, var(--primary), var(--hot), var(--accent), var(--primary));
+          position:relative;box-shadow:var(--ring)}
+    .logo::after{content:"∞";position:absolute;inset:0;display:grid;place-items:center;font-weight:900;color:#0c0c14;text-shadow:0 1px 0 rgba(255,255,255,.6)}
+    .wordmark{font-family:"Space Grotesk",Inter,system-ui,sans-serif;font-weight:900;font-size:22px;letter-spacing:.5px}
+    .pill{font-size:12px;border:1px solid rgba(255,255,255,.12);padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.03);backdrop-filter:blur(6px)}
+    .btn{appearance:none;border:0;border-radius:999px;padding:14px 20px;font-weight:700;cursor:pointer}
+    .btn-primary{background:linear-gradient(110deg, var(--hot), var(--primary) 55%, var(--accent)); color:#0c0c14;box-shadow:var(--ring)}
+    .btn-ghost{background:rgba(255,255,255,.06);color:var(--text);border:1px solid rgba(255,255,255,.12)}
+    .grid{display:grid;gap:18px}
+
+    /* Hero */
+    .hero{padding:64px 0 36px;display:grid;gap:24px}
+    .headline{font-family:"Space Grotesk";font-size:clamp(32px, 6vw, 64px);line-height:1.05;margin:0;font-weight:900;
+              background:linear-gradient(110deg, #fff, var(--primary) 40%, var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
+    .sub{font-size:18px;color:var(--muted);max-width:700px}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.12);
+          border-radius:var(--radius);box-shadow:var(--shadow)}
+    .timer{display:grid;grid-template-columns:repeat(4,minmax(70px,1fr));gap:12px;padding:18px}
+    .slot{padding:22px;border-radius:18px;background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.08);text-align:center}
+    .num{font-size:40px;font-weight:900;letter-spacing:1px}
+    .lab{font-size:12px;color:var(--muted)}
+    .hero-actions{display:flex;flex-wrap:wrap;gap:12px}
+    .meta{display:flex;gap:10px;flex-wrap:wrap;color:var(--muted)}
+
+    /* Sections */
+    section{padding:36px 0}
+    .section-title{font-family:"Space Grotesk";font-size:28px;margin:0 0 12px 0}
+    .columns{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
+    .col-6{grid-column:span 6}
+    .col-4{grid-column:span 4}
+    .col-12{grid-column:span 12}
+
+    .list{display:grid;gap:12px}
+    .list .item{padding:16px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.10)}
+    .item strong{display:block;margin-bottom:6px}
+
+    /* Roadmap */
+    .roadmap-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+    .stage{padding:16px;border-radius:16px;background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+           border:1px dashed rgba(255,255,255,.18)}
+    .stage h4{margin:0 0 8px 0}
+
+    /* Footer */
+    footer{padding:30px 0;color:var(--muted);font-size:14px}
+
+    /* Toast & Modal */
+    .toast{position:fixed;inset:auto 16px 16px auto;background:#101018;color:#fff;padding:12px 16px;border-radius:12px;border:1px solid rgba(255,255,255,.12);opacity:0;transform:translateY(10px);pointer-events:none;transition:.25s}
+    .toast.show{opacity:1;transform:translateY(0);pointer-events:auto}
+
+    .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none}
+    .modal{position:fixed;inset:50% auto auto 50%;transform:translate(-50%,-50%) scale(.96);opacity:0;transition:.2s;display:none;
+           width:min(680px, 92vw);background:var(--card);border:1px solid rgba(255,255,255,.12);border-radius:18px;box-shadow:var(--shadow)}
+    .modal header{display:flex;justify-content:space-between;align-items:center;padding:16px;border-bottom:1px solid rgba(255,255,255,.06)}
+    .modal .content{padding:18px}
+    .modal.show{display:block;opacity:1;transform:translate(-50%,-50%) scale(1)}
+    .modal-backdrop.show{display:block}
+
+    /* Responsive */
+    @media (max-width: 900px){
+      .timer{grid-template-columns:repeat(2,minmax(120px,1fr))}
+      .columns{grid-template-columns:1fr}
+      .col-6,.col-4,.col-12{grid-column:span 1}
+      .roadmap-grid{grid-template-columns:1fr 1fr}
+    }
+    @media (prefers-reduced-motion: no-preference){
+      .shimmer{background-size:200% 100%;animation:shine 5s linear infinite}
+      @keyframes shine{to{background-position:-200% 0}}
+      .logo.spin{animation:spin 6s linear infinite}
+      @keyframes spin{to{transform:rotate(1turn)}}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <nav class="nav">
+      <a class="brand" href="#" aria-label="$SOON Home">
+        <div class="logo" id="logo"></div>
+        <div class="wordmark">$SOON</div>
+      </a>
+      <div class="meta">
+        <span class="pill" id="delayCount">Delays: 0</span>
+        <span class="pill" id="burned">Supply Burned: 0.00%</span>
+        <span class="pill">Chain: SOL</span>
+      </div>
+    </nav>
+
+    <header class="hero">
+      <h1 class="headline shimmer">Launching in… <span aria-live="polite" aria-atomic="true"></span></h1>
+      <div class="card">
+        <div class="timer" role="timer" aria-live="polite" aria-atomic="true">
+          <div class="slot"><div class="num" id="dd">00</div><div class="lab">Days</div></div>
+          <div class="slot"><div class="num" id="hh">00</div><div class="lab">Hours</div></div>
+          <div class="slot"><div class="num" id="mm">00</div><div class="lab">Minutes</div></div>
+          <div class="slot"><div class="num" id="ss">00</div><div class="lab">Seconds</div></div>
+        </div>
+      </div>
+      <p class="sub">$SOON is the satirical memecoin that’s always almost ready. The countdown never ends. The hype never dies. The patience gets rewarded.</p>
+      <div class="hero-actions">
+        <button class="btn btn-primary" id="waitlistBtn">Join the Waitlist</button>
+        <button class="btn btn-ghost" id="megaSoonBtn">Mega Soon Event</button>
+        <button class="btn btn-ghost" id="copyAddrBtn" title="Copy contract address">Copy Contract</button>
+      </div>
+    </header>
+
+    <section id="tokenomics">
+      <h2 class="section-title">Tokenomics</h2>
+      <div class="columns">
+        <div class="col-6 list">
+          <div class="item"><strong>Total Supply</strong> 1,000,000,000 $SOON</div>
+          <div class="item"><strong>Fair Vibe</strong> No presale. No team allocation. Only patience.</div>
+          <div class="item"><strong>Delay Burn</strong> Each delay burns 0.05% of supply. (Satirical on-site counter.)</div>
+          <div class="item"><strong>LP Lock</strong> Locked until… soon.</div>
+        </div>
+        <div class="col-6 list">
+          <div class="item"><strong>Patience Mining</strong> Hold longer → claim more points (redeemable for NFTs/roles later).</div>
+          <div class="item"><strong>Ticker</strong> $SOON</div>
+          <div class="item"><strong>Chain</strong> SOLANA (placeholder)</div>
+          <div class="item"><strong>Contract</strong> <code id="contract">0xSOONSOONSOONSOONSOONSOONSOON0001</code></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="roadmap">
+      <h2 class="section-title">The Roadmap (Satire Edition)</h2>
+      <div class="roadmap-grid">
+        <div class="stage">
+          <h4>Q1 — Announce Countdown ✅</h4>
+          <p>Deploy timer. Make it shiny. Make it loop. Done.</p>
+        </div>
+        <div class="stage">
+          <h4>Q2 — Update the Update 🔄</h4>
+          <p>Announce we’ve updated the announcement of the update.</p>
+        </div>
+        <div class="stage">
+          <h4>Q3 — Mega Soon Event 🚀</h4>
+          <p>Click the button. Witness the soon. Experience the delay.</p>
+        </div>
+        <div class="stage">
+          <h4>Q4 — Launch Forever 🌀</h4>
+          <p>Every end is a new soon. The countdown resets. The legend grows.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="perks">
+      <h2 class="section-title">Perks for the Patient</h2>
+      <div class="columns">
+        <div class="col-4 item">
+          <strong>Patience Points</strong>
+          Earn points over time (tracked client-side for the meme). Later tradable for NFT badges.
+        </div>
+        <div class="col-4 item">
+          <strong>Delay Badges</strong>
+          Unique NFT art per delay epoch: "Soon #001", "Soon #002" …
+        </div>
+        <div class="col-4 item">
+          <strong>Governance of Nothing</strong>
+          Vote on how long the next soon should be. Democracy, but for waiting.
+        </div>
+      </div>
+    </section>
+
+    <section id="faq">
+      <h2 class="section-title">FAQ</h2>
+      <div class="list">
+        <div class="item"><strong>When launch?</strong> Soon.</div>
+        <div class="item"><strong>Is this a rug?</strong> Only if you stand up too fast.</div>
+        <div class="item"><strong>Is the burn real?</strong> On this site it is. On-chain burns are your call when you ship.</div>
+        <div class="item"><strong>How do I join?</strong> Click <em>Join the Waitlist</em> and enjoy the vibe.
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="columns">
+        <div class="col-12">
+          © <span id="year"></span> $SOON. It’s almost here… and always will be.
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast">You’re on the waitlist. Please remain seated for soon.</div>
+
+  <!-- Modal: Mega Soon -->
+  <div class="modal-backdrop" id="modalBack"></div>
+  <div class="modal" id="modal">
+    <header>
+      <strong>Mega Soon Event</strong>
+      <button class="btn btn-ghost" id="closeModal">Close</button>
+    </header>
+    <div class="content">
+      <p>Welcome to the peak of anticipation. The launch has been <strong>strategically delayed</strong> to increase narrative tension.</p>
+      <p>As compensation, 0.05% has been burned from the theoretical supply. Patience Points +5.</p>
+      <p>Thank you for vibing with us. New countdown initiated… soon.</p>
+    </div>
+  </div>
+
+  <script>
+    // === Utility: simple store ===
+    const store = {
+      read(key, fallback){
+        try{ const v = JSON.parse(localStorage.getItem(key)); return v ?? fallback; }catch{ return fallback }
+      },
+      write(key, val){ localStorage.setItem(key, JSON.stringify(val)); }
+    };
+
+    // === Countdown logic ===
+    const dd = document.getElementById('dd');
+    const hh = document.getElementById('hh');
+    const mm = document.getElementById('mm');
+    const ss = document.getElementById('ss');
+
+    function rndSoonMs(){
+      // Random between 45 and 180 minutes
+      const min = 45 * 60 * 1000;
+      const max = 180 * 60 * 1000;
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function format(n){ return String(n).padStart(2,'0'); }
+
+    function setTargetSoon(newDelay){
+      const target = Date.now() + (newDelay || rndSoonMs());
+      store.write('soon_target', target);
+      return target;
+    }
+
+    function getTarget(){
+      let t = store.read('soon_target', null);
+      if(!t || t < Date.now()){
+        t = setTargetSoon();
+      }
+      return t;
+    }
+
+    function tick(){
+      const target = getTarget();
+      let delta = target - Date.now();
+      if(delta <= 0){
+        onDelay();
+        return; // onDelay resets target and UI
+      }
+      const d = Math.floor(delta / (1000*60*60*24));
+      delta -= d * (1000*60*60*24);
+      const h = Math.floor(delta / (1000*60*60));
+      delta -= h * (1000*60*60);
+      const m = Math.floor(delta / (1000*60));
+      delta -= m * (1000*60);
+      const s = Math.floor(delta / 1000);
+      dd.textContent = format(d);
+      hh.textContent = format(h);
+      mm.textContent = format(m);
+      ss.textContent = format(s);
+      requestAnimationFrame(()=> setTimeout(tick, 250));
+    }
+
+    // === Delay events: burn % + count + points ===
+    const delayEl = document.getElementById('delayCount');
+    const burnedEl = document.getElementById('burned');
+    const POINTS_KEY = 'soon_points';
+
+    function onDelay(){
+      const count = store.read('soon_delay_count', 0) + 1;
+      store.write('soon_delay_count', count);
+      const burned = Math.min(100, (store.read('soon_burned', 0) + 0.05));
+      store.write('soon_burned', burned);
+      const pts = store.read(POINTS_KEY, 0) + 5;
+      store.write(POINTS_KEY, pts);
+      updateMeta();
+      setTargetSoon();
+      showModal();
+      confetti();
+      setTimeout(tick, 800); // resume ticking soon
+    }
+
+    function updateMeta(){
+      delayEl.textContent = `Delays: ${store.read('soon_delay_count',0)}`;
+      burnedEl.textContent = `Supply Burned: ${store.read('soon_burned',0).toFixed(2)}%`;
+    }
+
+    // === UI: toast, modal, confetti ===
+    const toast = document.getElementById('toast');
+    document.getElementById('waitlistBtn').addEventListener('click',()=>{
+      toast.classList.add('show');
+      setTimeout(()=> toast.classList.remove('show'), 2200);
+      const pts = store.read(POINTS_KEY, 0) + 3; // bonus
+      store.write(POINTS_KEY, pts);
+    });
+
+    const modal = document.getElementById('modal');
+    const modalBack = document.getElementById('modalBack');
+    function showModal(){ modal.classList.add('show'); modalBack.classList.add('show'); }
+    function hideModal(){ modal.classList.remove('show'); modalBack.classList.remove('show'); }
+    document.getElementById('megaSoonBtn').addEventListener('click',()=>{ onDelay(); });
+    document.getElementById('closeModal').addEventListener('click', hideModal);
+    modalBack.addEventListener('click', hideModal);
+
+    // Cute confetti without deps
+    function confetti(){
+      const n = 60; const frag = document.createDocumentFragment();
+      for(let i=0;i<n;i++){
+        const p = document.createElement('div');
+        p.style.position='fixed';
+        p.style.left = Math.random()*100 + 'vw';
+        p.style.top = '-10px';
+        p.style.width = '8px';
+        p.style.height = '14px';
+        p.style.background = `hsl(${Math.random()*360}, 90%, 70%)`;
+        p.style.opacity = '0.9';
+        p.style.transform = `rotate(${Math.random()*360}deg)`;
+        p.style.borderRadius='2px';
+        p.style.zIndex='9999';
+        document.body.appendChild(p);
+        const duration = 1800 + Math.random()*1200;
+        const x = (Math.random()*2-1) * 120;
+        p.animate([
+          { transform:`translate(0,0) rotate(0)`, opacity:1 },
+          { transform:`translate(${x}px, 110vh) rotate(${Math.random()*720}deg)`, opacity:0.2 }
+        ], { duration, easing:'cubic-bezier(.2,.7,.2,1)' }).onfinish = ()=> p.remove();
+      }
+    }
+
+    // Copy contract address
+    const contractEl = document.getElementById('contract');
+    document.getElementById('copyAddrBtn').addEventListener('click', async ()=>{
+      try{ await navigator.clipboard.writeText(contractEl.textContent.trim());
+           toast.textContent = 'Contract copied to clipboard';
+           toast.classList.add('show');
+           setTimeout(()=>{ toast.classList.remove('show'); toast.textContent='You’re on the waitlist. Please remain seated for soon.' }, 1800);
+      }catch{ alert('Copy failed. Please copy manually.'); }
+    });
+
+    // Logo spin easter egg
+    document.getElementById('logo').addEventListener('click', (e)=>{
+      e.currentTarget.classList.toggle('spin');
+    });
+
+    // Footer year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Init from store
+    updateMeta();
+    tick();
+  </script>
+</body>
+</html>
